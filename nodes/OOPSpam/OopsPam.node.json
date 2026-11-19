@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-oopspam.oopsPam",
+	"node": "n8n-nodes-oopspam.oopspam",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Utility", "Marketing & Content"],

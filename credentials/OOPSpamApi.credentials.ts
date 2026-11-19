@@ -6,10 +6,10 @@ import type {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export class OOPSpamApi implements ICredentialType {
-	name = 'oopsPamApi';
+export class OopspamApi implements ICredentialType {
+	name = 'oopspamApi';
 
-	displayName = 'OOPSpam API';
+	displayName = 'Oopspam API';
 
 	icon: Icon = { light: 'file:../icons/oopspam.svg', dark: 'file:../icons/oopspam.dark.svg' };
 
@@ -24,7 +24,7 @@ export class OOPSpamApi implements ICredentialType {
 			default: '',
 			required: true,
 			description:
-				'Your OOPSpam API key. You can find it in the <a href="https://app.oopspam.com" target="_blank">OOPSpam Dashboard</a>.',
+				'Your oopspam API key. You can find it in the <a href="https://app.oopspam.com" target="_blank">oopspam Dashboard</a>.',
 		},
 	];
 
@@ -43,7 +43,7 @@ export class OOPSpamApi implements ICredentialType {
 			url: '/spamdetection',
 			method: 'POST',
 			body: {
-				content: 'Credential test for the OOPSpam n8n node.',
+				content: 'Credential test for the oopspam n8n node.',
 			},
 		},
 	};

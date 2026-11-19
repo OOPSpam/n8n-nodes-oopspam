@@ -1,7 +1,7 @@
 {
 	"name": "n8n-nodes-oopspam",
 	"version": "0.1.0",
-	"description": "Use the OOPSpam API in n8n to score content for spam, report misdetections and check domain reputation.",
+	"description": "Use the oopspam API in n8n to score content for spam, report misdetections and check domain reputation.",
 	"license": "MIT",
 	"homepage": "https://www.oopspam.com",
 	"keywords": [
@@ -15,7 +15,7 @@
 		"comment spam"
 	],
 	"author": {
-		"name": "OOPSpam",
+		"name": "oopspam",
 		"email": "contact@oopspam.com"
 	},
 	"repository": {
@@ -38,10 +38,10 @@
 		"n8nNodesApiVersion": 1,
 		"strict": true,
 		"credentials": [
-			"dist/credentials/OOPSpamApi.credentials.js"
+			"dist/credentials/OopspamApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/OOPSpam/OopsPam.node.js"
+			"dist/nodes/Oopspam/Oopspam.node.js"
 		]
 	},
 	"devDependencies": {

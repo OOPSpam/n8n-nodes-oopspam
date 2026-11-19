@@ -8,7 +8,7 @@ import {
 	type INodeTypeDescription,
 } from 'n8n-workflow';
 
-/** Fields that the OOPSpam API expects as arrays of two-letter codes. */
+/** Fields that the oopspam API expects as arrays of two-letter codes. */
 const LIST_FIELDS = new Set(['allowedCountries', 'blockedCountries', 'allowedLanguages']);
 
 /**
@@ -162,7 +162,7 @@ const additionalFields: INodeProperties = {
 			type: 'boolean',
 			default: false,
 			description:
-				'Whether the request is logged in the OOPSpam Dashboard. Requires Source to be set.',
+				'Whether the request is logged in the oopspam Dashboard. Requires Source to be set.',
 		},
 		{
 			displayName: 'Sender IP',
@@ -191,24 +191,24 @@ const additionalFields: INodeProperties = {
 	],
 };
 
-export class OopsPam implements INodeType {
+export class Oopspam implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'OOPSpam',
-		name: 'oopsPam',
+		displayName: 'oopspam',
+		name: 'oopspam',
 		icon: { light: 'file:../../icons/oopspam.svg', dark: 'file:../../icons/oopspam.dark.svg' },
 		group: ['input'],
 		version: 1,
 		subtitle: '={{ $parameter["operation"] }}',
-		description: 'Score content and submissions for spam using the OOPSpam API',
+		description: 'Score content and submissions for spam using the oopspam API',
 		defaults: {
-			name: 'OOPSpam',
+			name: 'oopspam',
 		},
 		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
-				name: 'oopsPamApi',
+				name: 'oopspamApi',
 				required: true,
 			},
 		],
@@ -254,7 +254,7 @@ export class OopsPam implements INodeType {
 						name: 'Report Misdetection',
 						value: 'reportMisdetection',
 						action: 'Report a spam misdetection',
-						description: 'Report a false positive or false negative back to OOPSpam',
+						description: 'Report a false positive or false negative back to oopspam',
 						routing: {
 							request: {
 								method: 'POST',
@@ -332,7 +332,7 @@ export class OopsPam implements INodeType {
 					},
 				},
 				description:
-					'Whether the submission should have been classified as spam. Turn off if OOPSpam wrongly marked a valid submission as spam.',
+					'Whether the submission should have been classified as spam. Turn off if oopspam wrongly marked a valid submission as spam.',
 			},
 			additionalFields,
 		],
