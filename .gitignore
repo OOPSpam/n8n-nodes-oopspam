@@ -1,2 +1,7 @@
 dist
 node_modules
+
+# Local agent tooling (not part of the package)
+.agents/
+AGENTS.md
+CLAUDE.md
