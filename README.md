@@ -19,7 +19,7 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 ## Operations
 
-- **Check for Spam**: send a message, comment or form submission to oopspam and receive a spam `Score` (0-6) with a detailed report.
+- **Check for Spam**: send a message, an email address, an IP address or any combination of them to oopspam and receive a spam `Score` (0-6) with a detailed report.
 - **Check Domain Reputation**: check whether a domain is listed by reputation blocklists.
 - **Report Misdetection**: report a false positive or false negative back to oopspam so detection improves for your use case.
 
@@ -48,11 +48,14 @@ Requires n8n 1.0.0 or later.
 ### Check a form submission for spam
 
 1. Add the **oopspam** node and select the **Check for Spam** operation.
-2. Set **Content** to the message or comment you want to check, for example `{{ $json.message }}`.
+2. Fill in the sender details you have. You can send any combination of them:
+    - **Content**: the message, comment or form submission, for example `{{ $json.message }}`.
+    - **Email**: the sender's email address, for example `{{ $json.email }}`.
+    - **Sender IP**: the sender's IP address, for example `{{ $json.ip }}`.
 3. Optionally open **Additional Fields** and add:
-    - **Email** and **Sender IP** to also check the sender against email and IP blocklists.
     - **Block Temporary Emails**, **Block VPN, Proxy and Tor** or **Block Data Center IPs** to tighten the filtering.
     - **Allowed Countries**, **Blocked Countries** or **Allowed Languages** to restrict submissions to specific countries or languages.
+    - **Content Context** to describe your website and what you consider spam. Setting it switches the request to contextual detection only.
     - **Log to Dashboard** together with **Source** to keep a log of the requests in the oopspam Dashboard.
 4. Add an **If** node after it and continue the workflow only when `{{ $json.Score }}` is lower than `3`.
 

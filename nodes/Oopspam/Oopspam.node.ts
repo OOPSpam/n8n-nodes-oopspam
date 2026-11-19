@@ -44,11 +44,6 @@ async function prepareRequestBody(
 
 			body[name] = value;
 		}
-
-		if (body.senderIp !== undefined) {
-			body.senderIP = body.senderIp;
-			delete body.senderIp;
-		}
 	}
 
 	for (const key of Object.keys(body)) {
@@ -86,7 +81,7 @@ const additionalFields: INodeProperties = {
 			name: 'allowedCountries',
 			type: 'string',
 			default: '',
-			placeholder: 'us, it',
+			placeholder: 'e.g. us, it',
 			description:
 				'Comma-separated list of two-letter country codes that are allowed. Requires Sender IP.',
 		},
@@ -95,7 +90,7 @@ const additionalFields: INodeProperties = {
 			name: 'allowedLanguages',
 			type: 'string',
 			default: '',
-			placeholder: 'en, de',
+			placeholder: 'e.g. en, de',
 			description:
 				'Comma-separated list of two-letter language codes that are allowed. Content in any other language is scored as spam.',
 		},
@@ -125,7 +120,7 @@ const additionalFields: INodeProperties = {
 			name: 'blockedCountries',
 			type: 'string',
 			default: '',
-			placeholder: 'ru, cn',
+			placeholder: 'e.g. ru, cn',
 			description:
 				'Comma-separated list of two-letter country codes that are blocked. Requires Sender IP.',
 		},
@@ -145,16 +140,9 @@ const additionalFields: INodeProperties = {
 				rows: 4,
 			},
 			default: '',
+			placeholder: 'e.g. A SaaS blog. Treat messages that advertise SEO or link building as spam.',
 			description:
 				'Describe your website and what you consider spam. When set, only contextual detection is applied instead of the standard checks.',
-		},
-		{
-			displayName: 'Email',
-			name: 'email',
-			type: 'string',
-			default: '',
-			placeholder: 'name@example.com',
-			description: 'Email address of the person who submitted the content',
 		},
 		{
 			displayName: 'Log to Dashboard',
@@ -165,20 +153,11 @@ const additionalFields: INodeProperties = {
 				'Whether the request is logged in the oopspam Dashboard. Requires Source to be set.',
 		},
 		{
-			displayName: 'Sender IP',
-			name: 'senderIp',
-			type: 'string',
-			default: '',
-			placeholder: '185.234.219.246',
-			description:
-				'IP address of the person who submitted the content. Do not use your own IP address.',
-		},
-		{
 			displayName: 'Source',
 			name: 'source',
 			type: 'string',
 			default: '',
-			placeholder: 'example.com',
+			placeholder: 'e.g. example.com',
 			description: 'Unique identifier for your website or application. Used to group logs.',
 		},
 		{
@@ -198,7 +177,8 @@ export class Oopspam implements INodeType {
 		icon: { light: 'file:../../icons/oopspam.svg', dark: 'file:../../icons/oopspam.dark.svg' },
 		group: ['input'],
 		version: 1,
-		subtitle: '={{ $parameter["operation"] }}',
+		subtitle:
+			'={{ ({"checkSpam": "Check for Spam", "checkDomainReputation": "Check Domain Reputation", "reportMisdetection": "Report Misdetection"})[$parameter["operation"]] }}',
 		description: 'Score content and submissions for spam using the oopspam API',
 		defaults: {
 			name: 'oopspam',
@@ -229,8 +209,8 @@ export class Oopspam implements INodeType {
 					{
 						name: 'Check for Spam',
 						value: 'checkSpam',
-						action: 'Check content for spam',
-						description: 'Score a message, comment or form submission for spam',
+						action: 'Check submission for spam',
+						description: 'Score content, an email address or an IP address for spam',
 						routing: {
 							request: {
 								method: 'POST',
@@ -278,7 +258,7 @@ export class Oopspam implements INodeType {
 					rows: 5,
 				},
 				default: '',
-				placeholder: 'The message or comment to analyze',
+				placeholder: 'e.g. Dear Agent, we are a manufacturing company...',
 				displayOptions: {
 					show: {
 						operation: ['checkSpam', 'reportMisdetection'],
@@ -294,11 +274,52 @@ export class Oopspam implements INodeType {
 				description: 'The message, comment or form submission to analyze',
 			},
 			{
+				displayName: 'Email',
+				name: 'email',
+				type: 'string',
+				default: '',
+				placeholder: 'e.g. nathan@example.com',
+				displayOptions: {
+					show: {
+						operation: ['checkSpam', 'reportMisdetection'],
+					},
+				},
+				routing: {
+					request: {
+						body: {
+							email: '={{ $parameter["email"] }}',
+						},
+					},
+				},
+				description: 'Email address of the person who submitted the content',
+			},
+			{
+				displayName: 'Sender IP',
+				name: 'senderIp',
+				type: 'string',
+				default: '',
+				placeholder: 'e.g. 185.234.219.246',
+				displayOptions: {
+					show: {
+						operation: ['checkSpam', 'reportMisdetection'],
+					},
+				},
+				routing: {
+					request: {
+						body: {
+							senderIP: '={{ $parameter["senderIp"] }}',
+						},
+					},
+				},
+				description:
+					'IP address of the person who submitted the content. Do not use your own IP address.',
+			},
+			{
 				displayName: 'Domain',
 				name: 'domain',
 				type: 'string',
 				default: '',
-				placeholder: 'example.com',
+				placeholder: 'e.g. example.com',
 				required: true,
 				displayOptions: {
 					show: {
