@@ -6,12 +6,15 @@ This is an n8n community node. It lets you use [oopspam](https://www.oopspam.com
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/sustainable-use-license/) workflow automation platform.
 
-- [Installation](#installation)
-- [Operations](#operations)
-- [Credentials](#credentials)
-- [Compatibility](#compatibility)
-- [Usage](#usage)
-- [Resources](#resources)
+- [n8n-nodes-oopspam](#n8n-nodes-oopspam)
+	- [Installation](#installation)
+	- [Operations](#operations)
+		- [Scoring](#scoring)
+	- [Credentials](#credentials)
+	- [Compatibility](#compatibility)
+	- [Usage](#usage)
+		- [Check a form submission for spam](#check-a-form-submission-for-spam)
+	- [Resources](#resources)
 
 ## Installation
 
@@ -72,10 +75,28 @@ Example response:
 		"countryMatch": false,
 		"numberOfSpamWords": 1,
 		"spamWords": ["dear"],
-		"isContentTooShort": false
+		"isContentTooShort": false,
+		"isItVPN": true,
+		"isItDataCenter": false
 	}
 }
 ```
+
+The node returns the API response unchanged, so `Details` may contain the following keys:
+
+| Key | Meaning |
+| --- | --- |
+| `isIPBlocked` | The sender IP is on an IP denylist |
+| `isEmailBlocked` | The email address is on an email denylist |
+| `isContentSpam` | Machine learning verdict on the content (`spam` or `nospam`) |
+| `langMatch` | The detected language matches `allowedLanguages` |
+| `countryMatch` | The country of the sender IP matches `allowedCountries`/`blockedCountries` |
+| `numberOfSpamWords` / `spamWords` | Number and list of spam words found in the content |
+| `isContentTooShort` | The content is shorter than 20 characters |
+| `isItVPN` | The sender IP belongs to a VPN/proxy network |
+| `isItDataCenter` | The sender IP belongs to a hosting/data center network |
+
+All keys are optional: oopspam returns a result as soon as one check detects spam, so only the fields relevant to that request are present. `isItVPN` and `isItDataCenter` are informational — they explain **why** an IP was flagged, and are only returned when the IP was flagged. They don't cause the block themselves.
 
 Country codes and language codes are passed as a comma-separated list, for example `us, it` or `en, de`.
 
