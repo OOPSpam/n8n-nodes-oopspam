@@ -5,3 +5,10 @@ node_modules
 .agents/
 AGENTS.md
 CLAUDE.md
+
+# Never commit local secrets or OS files
+.env
+.env.*
+*.log
+.npmrc
+.DS_Store
