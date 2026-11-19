@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-oopspam",
-	"version": "0.1.0",
+	"version": "0.0.0",
 	"description": "Use the oopspam API in n8n to score content for spam, report misdetections and check domain reputation.",
 	"license": "MIT",
 	"homepage": "https://www.oopspam.com",
